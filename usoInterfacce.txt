@@ -1,0 +1,4 @@
+quando ho una classe astratta (tipo entity per zombie o player) allora creo un interfaccia che viene implementata:
+Entity(interfaccia)-> AbstractEntity(abstract class)-> Player(class) e Zombie(class)
+
+è inoltre utile avere classi che gestiscono array di elementi(tipo tutte le quest) al posto di mettere tutto insieme nel main
