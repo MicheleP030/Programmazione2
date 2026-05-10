@@ -23,6 +23,18 @@ Una variabile (sotto oggetto) di un interfaccia che a runtime modifico per modif
 (AttackPattern tipo statico, RangedAttack/MeleeAttack tipo dinamico)
 ### Factory Method
 Un metodo (classe) che istanzia gli oggetti al posto di dover chiamare il costruttore, con l'obiettivo di non esporre il costruttore/rendere generico l'oggetto creato (player weapon -> sword/bow/gun tramite metodo in player generateWeapon o classe WeaponFactory)
+### State Pattern
+Rappresenta gli stati e le transizioni tra stati che possono avere degli oggetti. Ad esempio un player spawna in idle, se preme w passa in movimento ecc. Se implementato con switch case la logica diventa difficile da mantenere e quindi è comodo sfruttare lo strategy pattern per gli stati. Ogni stato implementerà i metodi per passare ad un altro stato in caso succedesse qualcosa. Quindi potrò avere un oggetto generico e quando accade qualcosa chiamo il metodo apposta che decide se passare ad un nuovo stato o no (se sono in idle e mi muovo cambio stato, se sono già in movement non lo cambio)
+### Template method
+fisso una struttura generale e delego i dettagli alle sottoclassi. Sarà un metodo final con all'interno altre funzioni che verranno overridate nelle classi figlie. Alternativamente posso avere un metodo non final dove inserisco solo le cose essenziali e poi ogni figlio lo overrida (se serve) aggiungendo super.metodo() e le funzionalità aggiuntive
+### Visitor Pattern
+permette di fare double dispatch (il metodo usato dipende da due tipi dinamici e non da uno). Esempio:
+animale.mangia(cibo) -> single dispatch ha mangia metodo che cambia dinamicamente a seconda dell'animale su cui viene chiamato, ma non sul cibo. Con double dispatch cambia a seconda di entrambi.
+avrò una interfaccia visitor con n metodi visit (nel caso dell'esempio uno per ogni cibo) dove dichiaro un metodo per ogni cibo.
+Nella classe generica (in questo caso cibo) Avrò un metodo accept(Visitor v) che viene overridato in ogni figlio, chiamando al suo interno v.visit(this). Infine ogni classe su cui viene chiamato il metodo (in questo caso animale) dovrà implementare l'interfaccia visitor per creare un metodo per ogni cibo. Così l'esempio di prima diventerebbe: cibo.accept(animale), dove dentro accept accadrà animale.visit(this) tenendo conto sia del tipo di cibo che di animale. (Avrò interfaccia Visitor e Visitable)
+### Observer Pattern
+alcuni oggetti osservano il comportamento di un oggetto e si comportano di conseguenza
+un oggetto(detto subject) mantiene la lista dei dipendenti (observers) e li notifica quando cambia stato. Ogni observer implementerà una interfaccia che gli fornisce un metodo per ricevere le notifiche (tipo un update) che verrà chiamato dal subject nel momento capiti qualcosa.
 ## Polimorfismo
 ### Di sottoclasse
 deciso a runtime, sfrutta l'override dei metodi per cambiare comportamento su oggetti con lo stesso tipo statico
@@ -47,6 +59,29 @@ esempio:
 
 esempio:  
 ``void addDogs(List<? super Dog> dogs)``
+## Collezioni
+si istanziano sempre col tipo più generico possibile, possibilmente un interfaccia (se non interessa l'implementazione uso Collection)
+1. List, possono avere duplicati e mantiene ordine:
+    - ArrayList<T> per velocità di lettura (se aggiungo ogni volta creo un nuovo array)
+    - LinkedList<T> per velocità di scrittura (se leggo devo ciclare tutti i nodi)
+2. Set, no duplicati e no ordine
+    - HashSet (sfrutta hash, veloce)
+    - LinkedHashSet (ha ordine)
+    - TreeSet (ordinato secondo un albero)
+3. Map, coppie chiave-valore, chiave unica e valori duplicabili
+    - HashMap (usa Hash)
+    - Treemap (albero)
+4. Queue, FIFO
+    - ArrayDeque<> (con interfaccia padre Queue)
+    - LinkedList<>
+    - PriorityQueue<>
+5. Stack, LIFO
+    - ArrayDeque<> (con interfaccia padre Dequeue)
+    - LinkedList<>
+
+usando le collezioni con classi create da utente è utile fare overriding di equals() e hashCode() di object per uguaglianza (utile per implementazioni con hash). In questo caso l uso di instanceof o getClass() è scusato
+Per decidere l'ordinamento invece è utile implementare l'interfaccia comparable() o creare una classe che implementa comparator (utile per implementazioni con tree).
+Queste ci devono essere sempre quando uso una collezione
 ## UML
 contiene i nomi delle classi, i loro campi, i loro modificatori, le loro associazioni/gerarchie
 
