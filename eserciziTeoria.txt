@@ -1,0 +1,18 @@
+23 A non implemento i metodi che mi servono
+10 B errore di cast esplicito
+11 A il metodo final non si può overridare
+a in b
+false true
+r1 = 24 r2 = 6 r3 = 13
+2*7 = 14
+3+4 = 7
+v f v f v f f f 
+y
+5 A set non è figlio di list
+18
+672
+6 7 7 A B B
+7 A A non ha un costruttore di default, quindi B deve istanziarlo
+false
+4 compilazione non posso istanziare una interfaccia
+55
